@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build Output
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- TAMBAHAN PENTING ---
+
+# 1. Environment Variables (SANGAT PENTING)
+# File ini berisi kunci rahasia Supabase Anda. JANGAN PERNAH DI-UPLOAD.
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 2. Testing Coverage
+# Jika nanti Anda menjalankan test, folder ini tidak perlu diupload
+coverage/
+
+# 3. Cache & Temporary Files
+.eslintcache
+*.tsbuildinfo
+
+# 4. OS Junk Files (Sampah Sistem Operasi)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 5. Supabase (Jika nanti menggunakan CLI)
+supabase/.branches
+supabase/.temp
