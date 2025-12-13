@@ -2,20 +2,57 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth; /* Kunci agar scroll #fitur dsb jadi halus */
+    scroll-behavior: smooth;
   }
   
   body {
-    @apply bg-gray-50 text-gray-800 font-sans antialiased;
+    @apply font-sans antialiased text-gray-800 bg-gray-50;
+    /* Background Pattern Halus */
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Custom Scrollbar (Chrome/Safari/Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full hover:bg-green-500 transition;
   }
 }
 
-/* Animasi Masuk Halaman */
+/* Animasi & Utility Custom */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/50 shadow-xl;
+  }
+  
+  .glass-dark {
+    @apply bg-gray-900/80 backdrop-blur-md border border-gray-700 shadow-2xl;
+  }
+
+  /* Animasi Floating (Melayang) */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Animasi Fade In */
+  .animate-enter {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-enter {
-  animation: fadeIn 0.4s ease-out forwards;
 }

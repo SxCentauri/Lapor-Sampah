@@ -24,7 +24,6 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8">
             <a href="#fitur" className="text-sm font-semibold text-gray-500 hover:text-green-600 transition">Fitur</a>
             <a href="#cara-kerja" className="text-sm font-semibold text-gray-500 hover:text-green-600 transition">Cara Kerja</a>
-            <a href="#tentang" className="text-sm font-semibold text-gray-500 hover:text-green-600 transition">Tentang</a>
           </div>
 
           {/* Auth Buttons */}
@@ -83,13 +82,15 @@ export default function LandingPage() {
 
           {/* Hero Image / Mockup Placeholder */}
           <div className="mt-16 relative mx-auto max-w-4xl">
-            <div className="absolute inset-0 bg-green-500 blur-3xl opacity-20 rounded-full"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=2070&auto=format&fit=crop" 
-              alt="App Preview" 
-              className="relative rounded-3xl shadow-2xl border-8 border-white mx-auto w-full object-cover h-64 md:h-96"
-            />
-          </div>
+   <div className="absolute inset-0 bg-green-500 blur-3xl opacity-20 rounded-full animate-pulse"></div> {/* Efek Glow */}
+   
+   <img 
+     src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=2070&auto=format&fit=crop" 
+     alt="App Preview" 
+     // PERHATIKAN CLASS DI BAWAH INI: animate-float
+     className="relative rounded-3xl shadow-2xl border-8 border-white mx-auto w-full object-cover h-64 md:h-96 animate-float"
+   />
+</div>
         </div>
       </section>
 
