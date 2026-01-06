@@ -29,7 +29,6 @@ export default function Admin() {
       setReports(data || [])
 
     } catch (err) {
-      console.error("Gagal load relasi, mencoba mode simple...", err)
       const { data: simpleData, error: simpleError } = await supabase
         .from('reports')
         .select('*')
@@ -56,7 +55,6 @@ export default function Admin() {
       fetchReports()
       
       if (newStatus === 'Verified' && userId) {
-         // Logika tambah poin manual sementara
          const { data: userPoints } = await supabase.from('profiles').select('points').eq('id', userId).single()
          if (userPoints) {
              await supabase.from('profiles').update({ points: (userPoints.points || 0) + 10 }).eq('id', userId)
@@ -75,13 +73,17 @@ export default function Admin() {
     }
   }
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    window.location.href = '/'
+  }
+
   const filteredReports = filter === 'All' ? reports : reports.filter(r => r.status === filter)
 
   return (
     <div className="min-h-screen p-6 md:p-12 font-sans md:pt-28 animate-enter">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header Section dengan Gradient Style */}
         <div className="relative rounded-[32px] overflow-hidden shadow-xl mb-10 group">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-800 to-green-600 opacity-90"></div>
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
@@ -108,16 +110,15 @@ export default function Admin() {
                         <RefreshCw size={18} className={loading ? "animate-spin" : ""} /> Refresh
                     </button>
                     <button 
-                        onClick={() => navigate('/dashboard')} 
+                        onClick={handleLogout} 
                         className="flex items-center gap-2 px-5 py-3 bg-white text-emerald-800 rounded-2xl hover:bg-emerald-50 transition active:scale-95 font-bold text-sm shadow-lg"
                     >
-                        <LogOut size={18} /> Ke Dashboard
+                        <LogOut size={18} /> Keluar
                     </button>
                 </div>
             </div>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <StatCard 
                 title="Total Laporan" 
@@ -149,7 +150,6 @@ export default function Admin() {
             />
         </div>
 
-        {/* Filter & Search Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
             <div className="bg-white p-1.5 rounded-2xl shadow-sm border border-gray-200 flex gap-1">
                 {['All', 'Pending', 'Verified', 'Resolved'].map(status => (
@@ -168,7 +168,6 @@ export default function Admin() {
             </div>
         </div>
 
-        {/* Table Container */}
         <div className="bg-white rounded-[32px] shadow-xl border border-gray-100 overflow-hidden min-h-[400px] relative">
             {loading ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
@@ -283,8 +282,6 @@ export default function Admin() {
   )
 }
 
-// --- KOMPONEN KECIL ---
-
 const StatCard = ({ title, count, icon, color, bg }) => (
     <div className={`p-6 rounded-3xl ${bg} border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex items-center gap-5 group`}>
         <div className={`w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition ${color}`}>
@@ -304,7 +301,6 @@ const StatusBadge = ({ status }) => {
         Resolved: "bg-emerald-50 text-emerald-600 border-emerald-200 ring-emerald-100"
     }
     
-    // Icon mapping
     const icons = {
         Pending: <Loader2 size={12} className="animate-spin" />,
         Verified: <Shield size={12} />,

@@ -4,26 +4,21 @@ import { Toaster } from 'sonner'
 import { Home, Camera, User, LogOut, Leaf, Loader2 } from 'lucide-react'
 import { supabase } from './supabaseClient'
 
-// Import Halaman
 import Login from './pages/Login'
 import Lapor from './pages/Lapor'
 import Profile from './pages/Profile'
 import LandingPage from './pages/LandingPage'
 import Admin from './pages/Admin'
 
-// Import Guard (Satpam)
 import AuthGuard from './components/AuthGuard'
 
-// Wrapper Animasi
 const PageWrapper = ({ children }) => {
   return <div className="animate-enter">{children}</div>
 }
 
-// --- NAVIGASI INTERNAL (Hanya tampil untuk Warga) ---
 const InternalNavigation = () => {
   const location = useLocation()
   
-  // Sembunyikan Navigasi di: Landing, Login, DAN Admin
   const hideNavPaths = ['/', '/login', '/admin'] 
   if (hideNavPaths.includes(location.pathname)) return null
 
@@ -36,7 +31,6 @@ const InternalNavigation = () => {
 
   return (
     <>
-      {/* DESKTOP NAV (Warga) */}
       <nav className="hidden md:flex fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md shadow-sm z-50 items-center justify-between px-6 lg:px-12 border-b border-gray-100 transition-all">
         <Link to="/dashboard" className="flex items-center gap-2 text-green-600 font-bold text-xl group">
           <Leaf className="fill-green-600 group-hover:scale-110 transition" />
@@ -54,7 +48,6 @@ const InternalNavigation = () => {
         </div>
       </nav>
 
-      {/* MOBILE NAV (Warga) */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 flex justify-around items-center h-16 z-50 pb-safe shadow-[0_-5px_10px_rgba(0,0,0,0.02)]">
         <Link to="/dashboard" className={`flex flex-col items-center gap-1 transition ${isActive('/dashboard') ? 'text-green-600 scale-105' : 'text-gray-400'}`}>
           <Home size={24} strokeWidth={isActive('/dashboard') ? 2.5 : 2} />
@@ -76,7 +69,6 @@ const InternalNavigation = () => {
   )
 }
 
-// --- DASHBOARD WARGA (Logic tetap sama) ---
 const Dashboard = () => {
   const [stats, setStats] = useState({ total: 0, resolved: 0, myReports: 0 })
   const [userName, setUserName] = useState('Warga')
@@ -153,23 +145,18 @@ const Dashboard = () => {
   )
 }
 
-// --- APP UTAMA ---
 function App() {
   return (
     <>
       <Toaster position="top-right" richColors theme="light" />
       <Router>
         <div className="bg-gray-50 min-h-screen text-gray-800 font-sans selection:bg-green-100 selection:text-green-700">
-            {/* Navigasi Internal (Hanya Muncul untuk Warga) */}
             <InternalNavigation />
             
             <Routes>
-                {/* 1. PUBLIC ROUTES */}
                 <Route path="/" element={<PageWrapper><LandingPage /></PageWrapper>} />
                 <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-                
-                {/* 2. USER ROUTES (HANYA WARGA) */}
-                {/* preventAdmin={true} -> Admin DILARANG MASUK SINI */}
+
                 <Route path="/dashboard" element={
                     <AuthGuard preventAdmin={true}>
                         <PageWrapper><Dashboard /></PageWrapper>
@@ -188,8 +175,6 @@ function App() {
                     </AuthGuard>
                 } />
 
-                {/* 3. ADMIN ROUTES (HANYA ADMIN) */}
-                {/* requireAdmin={true} -> Warga DILARANG MASUK SINI */}
                 <Route path="/admin" element={
                     <AuthGuard requireAdmin={true}>
                         <PageWrapper><Admin /></PageWrapper>

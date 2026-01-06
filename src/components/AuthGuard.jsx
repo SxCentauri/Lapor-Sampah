@@ -14,15 +14,13 @@ export default function AuthGuard({ children, requireAdmin = false, preventAdmin
 
   const checkAuth = async () => {
     try {
-      // 1. Cek Sesi Login
       const { data: { session } } = await supabase.auth.getSession()
       
       if (!session) {
-        navigate('/login') // Belum login? Tendang ke Login
+        navigate('/login')
         return
       }
 
-      // 2. Ambil Role User
       const { data: profile } = await supabase
         .from('profiles')
         .select('role')
@@ -31,34 +29,25 @@ export default function AuthGuard({ children, requireAdmin = false, preventAdmin
       
       const userRole = profile?.role || 'user'
 
-      // --- LOGIKA KEAMANAN KETAT ---
-
-      // SKENARIO A: Halaman Khusus Admin (misal: /admin)
-      // Jika User Biasa coba masuk -> Tendang ke Dashboard Warga
       if (requireAdmin && userRole !== 'admin') {
         navigate('/dashboard')
         return
       }
 
-      // SKENARIO B: Halaman Khusus Warga (misal: /dashboard, /lapor)
-      // Jika Admin coba masuk -> Tendang ke Dashboard Admin
       if (preventAdmin && userRole === 'admin') {
-        navigate('/admin')
+        window.location.href = '/admin'
         return
       }
 
-      // Jika lolos semua pengecekan
       setIsAuthorized(true)
+      setLoading(false)
 
     } catch (error) {
-      console.error("Auth Error:", error)
       navigate('/login')
-    } finally {
       setLoading(false)
     }
   }
 
-  // Tampilan Loading
   if (loading || !isAuthorized) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">

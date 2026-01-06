@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Leaf, Camera, MapPin, Award, CheckCircle, Menu, X, ArrowRight, Instagram, Twitter, Facebook } from 'lucide-react'
+import { Leaf, Camera, MapPin, Award, Menu, X, ArrowRight, Instagram, Twitter, Facebook } from 'lucide-react'
 
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -10,7 +10,7 @@ export default function LandingPage() {
       
       {/* --- NAVBAR PUBLIK --- */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-50 bg-white/80 backdrop-blur-md">
           
           {/* Logo */}
           <div className="flex items-center gap-2 text-green-600 font-bold text-2xl">
@@ -37,25 +37,34 @@ export default function LandingPage() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 text-gray-600">
-            {isMobileMenuOpen ? <X /> : <Menu />}
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 text-gray-600 transition-transform active:scale-95">
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-gray-100 p-6 space-y-4 shadow-lg absolute w-full">
-            <a href="#fitur" className="block text-sm font-semibold text-gray-600">Fitur</a>
-            <a href="#cara-kerja" className="block text-sm font-semibold text-gray-600">Cara Kerja</a>
-            <hr />
-            <Link to="/login" className="block w-full text-center py-3 rounded-xl border border-gray-200 font-bold text-gray-600">
+        {/* Mobile Dropdown (Dengan Animasi) */}
+        <div 
+          className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-100 shadow-lg overflow-hidden transition-all duration-300 ease-in-out origin-top ${
+            isMobileMenuOpen 
+              ? 'max-h-96 opacity-100 translate-y-0' 
+              : 'max-h-0 opacity-0 -translate-y-2'
+          }`}
+        >
+          {/* Container dalam untuk padding (supaya saat tutup padding tidak memakan tempat) */}
+          <div className="p-6 space-y-4">
+            <a href="#fitur" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold text-gray-600 hover:text-green-600 transition">Fitur</a>
+            <a href="#cara-kerja" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold text-gray-600 hover:text-green-600 transition">Cara Kerja</a>
+            
+            <hr className="border-gray-100" />
+            
+            <Link to="/login" className="block w-full text-center py-3 rounded-xl border border-gray-200 font-bold text-gray-600 hover:bg-gray-50 transition">
               Masuk Akun
             </Link>
-            <Link to="/login" className="block w-full text-center py-3 rounded-xl bg-green-600 text-white font-bold shadow-md">
+            <Link to="/login" className="block w-full text-center py-3 rounded-xl bg-green-600 text-white font-bold shadow-md hover:bg-green-700 transition">
               Daftar Sekarang
             </Link>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* --- HERO SECTION --- */}
@@ -82,15 +91,14 @@ export default function LandingPage() {
 
           {/* Hero Image / Mockup Placeholder */}
           <div className="mt-16 relative mx-auto max-w-4xl">
-   <div className="absolute inset-0 bg-green-500 blur-3xl opacity-20 rounded-full animate-pulse"></div> {/* Efek Glow */}
-   
-   <img 
-     src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=2070&auto=format&fit=crop" 
-     alt="App Preview" 
-     // PERHATIKAN CLASS DI BAWAH INI: animate-float
-     className="relative rounded-3xl shadow-2xl border-8 border-white mx-auto w-full object-cover h-64 md:h-96 animate-float"
-   />
-</div>
+             <div className="absolute inset-0 bg-green-500 blur-3xl opacity-20 rounded-full animate-pulse"></div>
+             
+             <img 
+               src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=2070&auto=format&fit=crop" 
+               alt="App Preview" 
+               className="relative rounded-3xl shadow-2xl border-8 border-white mx-auto w-full object-cover h-64 md:h-96 animate-float"
+             />
+          </div>
         </div>
       </section>
 
@@ -190,7 +198,7 @@ export default function LandingPage() {
             </div>
         </div>
         <div className="max-w-7xl mx-auto border-t border-gray-800 pt-8 text-center text-sm">
-            &copy; 2024 LaporKota Indonesia. All rights reserved.
+            &copy; 2025 LaporKota Indonesia. All rights reserved.
         </div>
       </footer>
     </div>
